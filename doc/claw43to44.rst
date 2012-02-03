@@ -42,3 +42,5 @@ and fix any broken links, etc.
 
 Currently this works for 1d and 2d applications on a single grid, 
 but not for *amrclaw*.
+
+For more details, see :ref:`convert`.
