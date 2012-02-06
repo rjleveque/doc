@@ -12,6 +12,7 @@ General Clawpack documentation
 .. toctree::
    :maxdepth: 2
    
+   gallery_example
 
 Overview and Getting Started:
 -----------------------------
