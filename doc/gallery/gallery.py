@@ -541,6 +541,16 @@ def make_fvmbook():
     images = ('frame0000fig1', 'frame0001fig1', 'frame0005fig1')
     gsec.new_item(appdir, plotdir, description, images)
     #----------------------------------------------
+
+    #----------------------------------------------
+    gsec = gallery.new_section('Chapter 22: Elastic Waves')
+    #----------------------------------------------
+    appdir = 'apps/fvmbook/chap22/corner'
+    description = """
+        2D Elasticity with a plane wave hitting a discontinuity in material parameters"""
+    images = ('frame0000fig2', 'frame0005fig2', 'frame0010fig2')
+    gsec.new_item(appdir, plotdir, description, images)
+    #----------------------------------------------
     
     gallery.create('gallery_fvmbook.rst')
     return gallery

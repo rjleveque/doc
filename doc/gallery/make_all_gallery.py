@@ -17,7 +17,7 @@ os.environ['CLAW_TOPO_DOWNLOAD'] = 'True'
 #examples_dir = CLAW + '/amrclaw/ex2'
 #make_all.make_all(examples_dir)
 
-if 1:
+if 0:
     examples_dir = CLAW + '/classic/examples'
     make_all.make_all(examples_dir)
 
@@ -29,7 +29,7 @@ if 0:
     examples_dir = CLAW + '/geoclaw/examples'
     make_all.make_all(examples_dir)
 
-if 0:
+if 1:
     examples_dir = CLAW + '/apps/fvmbook'
     make_all.make_all(examples_dir)
 
