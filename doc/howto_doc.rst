@@ -27,6 +27,9 @@ This should be done when you are close to pushing changes to the website,
 otherwise the above approach works fine and shows the current state of the
 documentation based on files in your working directory.
 
+This takes much longer than `make html` since it rebuilds pages for all
+versions.
+
 The instructions below make webpages that list v5.4.0, etc. and allow
 viewing docs that may be more relevant to a previous version of Clawpack.
 
@@ -59,7 +62,7 @@ To view the files, point your browser to `$CLAW/doc/doc/_build/html/master/index
 If you like what you see, you can push back to your fork and then issue a
 pull request to have these changes incorporated into the documentation.
 
-Note: to make versions where the links to the gallery work properly after the
+**Note:** To make versions where the links to the gallery work properly after the
 pages are pushed to the Clawpack website (but not locally), set
 the environment variable `SPHINX_WEB` to True in the above steps.
 This variable is used in `conf.py` to adjust the links used in
@@ -76,7 +79,7 @@ results shown in the galleries.
 
 **Add instructions for this step.**
 
-Then do the following:
+Then do the following::
 
     cd $CLAW/doc/gallery
     export SPHINX_WEB=False # to build for local viewing
