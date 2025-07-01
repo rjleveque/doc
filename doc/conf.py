@@ -44,8 +44,15 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.inheritance_diagram',
               'sphinx_multiversion',
               'sphinx.ext.mathjax',
-              'srclinks']
+              'srclinks',
+              'myst_parser',
+              'sphinxcontrib.bibtex']
 
+bibtex_bibfiles = ['references.bib']
+
+myst_enable_extensions = [
+    "colon_fence",
+]
 
 mathjax_path = 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
 

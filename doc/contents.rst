@@ -63,6 +63,8 @@ Examples and Applications
    contribute_apps
    testing
    sphinxdoc
+   myst.md
+   biblio.md
 
 .. _contents_fortcodes:
 
