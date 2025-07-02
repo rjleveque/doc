@@ -54,6 +54,8 @@ myst_enable_extensions = [
     "colon_fence",
 ]
 
+nb_kernel_rgx_aliases = {'python*':'python3'}
+
 mathjax_path = 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
 
 

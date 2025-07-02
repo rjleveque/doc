@@ -1,6 +1,6 @@
 
 (myst)=
-# Using Myst
+# Using Myst for our Documentation
 
 Experimenting with using
 [Myst](https://myst-parser.readthedocs.io/en/v0.17.2/index.html)
@@ -52,10 +52,19 @@ But I don't yet know how to refer to sections of `.rst` files, since  e.g.
 
 
 :::{versionchanged} 5.12.0
-This feature was recently modified!
 See the [release notes](https://www.clawpack.org/release_5_12_0.html).
+(This is the `versionchanged` admonition.)
 :::
 
 ## Jupyter notebooks
 
 Still need to figure this out.  See [myst-nb](https://myst-nb.readthedocs.io/en/latest/index.html).
+
+:::{caution}
+Need to now include
+```
+    extensions = ["myst_nb"]
+```
+in `conf.py` (which also loads `myst_parser`). But when I do so, I get
+the exception
+`jupyter_client.kernelspec.NoSuchKernel: No such kernel named python2`.
