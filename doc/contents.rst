@@ -64,7 +64,7 @@ Examples and Applications
    testing
    sphinxdoc
    myst.md
-   biblio.md
+   bibliography.md
 
 .. _contents_fortcodes:
 

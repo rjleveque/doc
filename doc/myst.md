@@ -22,7 +22,8 @@ Myst has many cool features, e.g.
 - You can cite references from `references.bib` and refer to
   {cite:t}`mandli2016clawpack` or {cite:p}`clawpack`.
   Note that hovering over a reference shows the citation, while clicking
-  on it takes you to the bibliography as defined in `biblio.md`.
+  on it takes you to the [Myst biblography](#bibliography)
+  as defined in `bibliography.md`.
   Getting this to work requires including `'sphinxcontrib.bibtex'` in
   the list of `exensions` in `conf.py`, and also including the line
   ```
