@@ -28,7 +28,7 @@ modeling inundation.
   Note that ETOPO 2022 is the current version and ETOPO1 (often used in the
   past for GeoClaw modeling is obsolete). 
   Subsets of the 30 or 60 arc-second versions can be downloaded using
-  the `geoclaw.topotools.read_netcdf` function, see
+  the `geoclaw.topotools.fetch_remote_topo` function, see
   :ref:`topo_netcdf`.  For the 15 arcsecond data it is necessary
   to download one or more tiles from the `15 Arc-second Resolution Bedrock
   elevation netCDF catalog

@@ -106,6 +106,21 @@ Changes to geoclaw
   are available without loading the elevation array.
   See :ref:`topotools` for an example.
 
+- **Remote-DEM fetch helper;** ``read_netcdf`` **deprecated.**
+  :func:`~clawpack.geoclaw.topotools.fetch_remote_topo` resolves a nickname
+  (a key of ``topotools.remote_topo_urls``), URL, or local path and reads it
+  through the ``topo_type=4`` path, returning a
+  :class:`~clawpack.geoclaw.topotools.Topography` with the requested
+  ``filter_region``/``coarsen``/``buffer``/``align`` applied.  The older
+  :func:`~clawpack.geoclaw.topotools.read_netcdf` is now a thin shim over it
+  that emits a ``DeprecationWarning``.  In ``etopotools``,
+  :func:`~clawpack.geoclaw.etopotools.fetch_etopo` is a convenience wrapper for
+  the etopo netCDF datasets, and
+  :func:`~clawpack.geoclaw.etopotools.etopo1_download` now always returns a
+  ``Topography``.  Because ``fetch_remote_topo`` uses the ``topo_type=4``
+  reader, the elevation variable must be in meters (or supply ``assume_units``
+  via ``nc_params``).  See :ref:`topo`.
+
 - **Python-owned priority ordering.**
   Topography files in ``topo.data`` are now sorted entirely in Python by
   :meth:`~clawpack.geoclaw.data.TopographyData._compute_priority_order`
