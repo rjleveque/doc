@@ -16,13 +16,13 @@ topotools module for working with topography data
 Preprocessing attributes
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:class:`~clawpack.geoclaw.topotools.Topography` objects support seven
+:class:`~clawpack.geoclaw.topotools.Topography` objects support eight
 preprocessing attributes that are applied automatically by
 :meth:`~clawpack.geoclaw.topotools.Topography.read` in this order:
 
 1. ``negate_z`` — flip sign of Z (independent of ``topo_type < 0``).
 2. ``z_shift`` — add a constant to all non-missing Z values.
-3. ``x_shift`` — add a constant to all x coordinates.
+3. ``x_shift``, ``y_shift`` — add a constant to all x / y coordinates.
 4. ``crop_extent``, ``buffer``, ``align``, ``coarsen`` — crop and subsample
    via :meth:`~clawpack.geoclaw.topotools.Topography.crop`.
 

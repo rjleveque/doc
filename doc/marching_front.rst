@@ -257,7 +257,7 @@ available from the NCEI thredds server:
 .. code:: ipython3
 
     path = 'https://www.ngdc.noaa.gov/thredds/dodsC/regional/puget_sound_13_mhw_2014.nc'
-    topo = topotools.fetch_remote_topo(path, filter_region=extent)
+    topo = topotools.fetch_remote_topo(path, crop_extent=extent)
 
 .. code:: ipython3
 

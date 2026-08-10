@@ -88,9 +88,9 @@ Changes to geoclaw
   See :ref:`topochanges`.
 
 - **Topography preprocessing attributes.**
-  :class:`~clawpack.geoclaw.topotools.Topography` now supports seven
+  :class:`~clawpack.geoclaw.topotools.Topography` now supports eight
   preprocessing attributes (``crop_extent``, ``coarsen``, ``buffer``,
-  ``align``, ``x_shift``, ``z_shift``, ``negate_z``) that are applied
+  ``align``, ``x_shift``, ``y_shift``, ``z_shift``, ``negate_z``) that are applied
   automatically when :meth:`~clawpack.geoclaw.topotools.Topography.read`
   loads a file.  See :ref:`setrun_topo_preprocessing` for the full table
   and :ref:`topotools` for usage examples and operation order.
@@ -111,7 +111,7 @@ Changes to geoclaw
   (a key of ``topotools.remote_topo_urls``), URL, or local path and reads it
   through the ``topo_type=4`` path, returning a
   :class:`~clawpack.geoclaw.topotools.Topography` with the requested
-  ``filter_region``/``coarsen``/``buffer``/``align`` applied.  The older
+  ``crop_extent``/``coarsen``/``buffer``/``align`` applied.  The older
   :func:`~clawpack.geoclaw.topotools.read_netcdf` is now a thin shim over it
   that emits a ``DeprecationWarning``.  In ``etopotools``,
   :func:`~clawpack.geoclaw.etopotools.fetch_etopo` is a convenience wrapper for
@@ -141,7 +141,7 @@ Changes to geoclaw
       topo.write('new.tt2', topo_type=2)
 
 - **New** ``topo.data`` **format.**
-  Each per-file block in ``topo.data`` now contains 9 lines (up from 2),
+  Each per-file block in ``topo.data`` now contains 10 lines (up from 2),
   recording all preprocessing attributes.  See :ref:`topodata_format` for
   the complete format specification.
 

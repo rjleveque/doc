@@ -228,7 +228,7 @@ directly into GeoClaw.  As a convenience, you can use the
 <topotools_module.html#clawpack.geoclaw.topotools.fetch_remote_topo>`_ function
 (the older `topotools.read_netcdf` function is now deprecated in favor of it).
 Note that this also allows reading in only a subset of the data, both limiting
-the extent (via `filter_region`) and the resolution, e.g. by sampling every
+the extent (via `crop_extent`) and the resolution, e.g. by sampling every
 other point (by setting `coarsen=2`). This is particularly useful if you only
 want a subset of a huge
 online netCDF file (e.g. coastal DEMs at 1/3 arcsecond resolution are typically
@@ -240,9 +240,9 @@ etopo and a few other NOAA THREDDS datasets. This allows reading etopo
 30 arc-second data, for example, via::
 
     from clawpack.geoclaw import topotools
-    filter_region = [-135, -120, 38, 52]
+    crop_extent = [-135, -120, 38, 52]
     topo = topotools.fetch_remote_topo('etopo22_30sec',
-                                       filter_region=filter_region,
+                                       crop_extent=crop_extent,
                                        coarsen=1, verbose=True)
 
 A quick plot of the topography can then be created using::
