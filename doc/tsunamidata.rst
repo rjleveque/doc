@@ -29,7 +29,7 @@ modeling inundation.
   past for GeoClaw modeling is obsolete). 
   Subsets of the 30 or 60 arc-second versions can be downloaded using
   the `geoclaw.topotools.fetch_remote_topo` function, see
-  :ref:`topo_netcdf`.  For the 15 arcsecond data it is necessary
+  :ref:`noaa_thredds`.  For the 15 arcsecond data it is necessary
   to download one or more tiles from the `15 Arc-second Resolution Bedrock
   elevation netCDF catalog
   <https://www.ngdc.noaa.gov/thredds/catalog/global/ETOPO2022/15s/15s_bed_elev_netcdf/catalog.html>`__
@@ -47,7 +47,8 @@ modeling inundation.
 - It is also possible to open a remote NetCDF file on the
   `NOAA THREDDS server <https://www.ngdc.noaa.gov/thredds/demCatalog.html>`_
   to download data, which allows downloading only a
-  subsampled subset of a large DEM.  See :ref:`topo_netcdf` for more details.
+  subsampled subset of a large DEM.  See :ref:`noaa_thredds` and
+  :ref:`netcdf_input` for more details.
 
 - `GEBCO Gridded Bathymetry Data
   <https://www.gebco.net/data_and_products/gridded_bathymetry_data/>`_

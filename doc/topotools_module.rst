@@ -24,7 +24,11 @@ preprocessing attributes that are applied automatically by
 2. ``z_shift`` — add a constant to all non-missing Z values.
 3. ``x_shift``, ``y_shift`` — add a constant to all x / y coordinates.
 4. ``crop_extent``, ``buffer``, ``align``, ``coarsen`` — crop and subsample
-   via :meth:`~clawpack.geoclaw.topotools.Topography.crop`.
+   via :meth:`~clawpack.geoclaw.topotools.Topography.crop`.  For
+   ``topo_type=4`` the same window is instead applied while reading the NetCDF
+   hyperslab, so only the requested subset is ever loaded and ``crop()`` is not
+   called afterwards; both paths compute the window identically, so the
+   resulting ``x``, ``y`` and ``Z`` are the same either way.
 
 Set them before calling ``read()``::
 
@@ -36,8 +40,76 @@ Set them before calling ``read()``::
    topo.z_shift = 10.0
    topo.read('bathymetry.nc', topo_type=4)
 
+``crop_extent``, ``coarsen``, ``buffer`` and ``align`` may equivalently be
+passed straight to ``read()``, which is often more convenient for a one-off
+read::
+
+   topo = Topography()
+   topo.read('bathymetry.nc', topo_type=4,
+             crop_extent=[-100., -60., 10., 50.], coarsen=2)
+
+``align`` deserves particular note.  The default ``align=None`` starts the
+coarsened grid at the requested ``crop_extent``.  Supplying ``align=[x, y]``
+instead pins the coarsened grid to that lattice, regardless of where the
+file's own first cell falls — useful for DEM tiles that extend a few cells
+past their nominal edge, where the coarsened grid should follow (say) the
+quarter-degree lattice rather than an unknown offset::
+
+   topo.read('tile.nc', topo_type=4, crop_extent=[-124.2, -124.0, 47.1, 47.3],
+             coarsen=3, align=[-124.25, 47.0])
+
 See :ref:`setrun_topo_preprocessing` for a full attribute table with types
 and defaults, and non-obvious behavior notes.
+
+
+.. _topotools_deprecated_args:
+
+Deprecated arguments
+~~~~~~~~~~~~~~~~~~~~~
+
+The vocabulary for cropping and subsampling was unified in this release.  The
+old spellings still work but emit a ``DeprecationWarning``:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 24 24 52
+
+   * - Deprecated
+     - Use instead
+     - Where
+   * - ``filter_region=``
+     - ``crop_extent=``
+     - :meth:`~clawpack.geoclaw.topotools.Topography.read`,
+       :meth:`~clawpack.geoclaw.topotools.Topography.crop`
+   * - ``extent=`` (as a crop input)
+     - ``crop_extent=``
+     - :meth:`~clawpack.geoclaw.topotools.Topography.interp_unstructured`
+   * - ``stride=``
+     - ``coarsen=`` (a single scalar)
+     - :meth:`~clawpack.geoclaw.topotools.Topography.read`
+   * - :func:`~clawpack.geoclaw.topotools.read_netcdf`
+     - :func:`~clawpack.geoclaw.topotools.fetch_remote_topo`
+     - ``topotools``
+   * - ``return_topo=``
+     - nothing; a ``Topography`` is always returned
+     - :func:`~clawpack.geoclaw.etopotools.etopo1_download`
+   * - ``topo_type=1``
+     - ``topo_type`` 2, 3 or 4
+     - reading and writing; see :ref:`topodata_format`
+
+Passing both ``crop_extent`` and one of its deprecated spellings raises
+``TypeError``; passing ``stride`` together with a conflicting ``coarsen``
+raises ``ValueError``, as does a per-axis ``stride``, which is no longer
+supported.
+
+.. note::
+
+   ``Topography.extent`` itself is *not* deprecated.  It remains the read-only
+   property giving the spatial bounds of the already-loaded data.  What is
+   deprecated is its use as a *crop input*; the crop you request is
+   ``crop_extent``.  Keeping the two distinct is the point of the rename — see
+   the "Region terminology" section of the
+   :class:`~clawpack.geoclaw.topotools.Topography` docstring.
 
 
 Lazy-load pattern for NetCDF (read_header)

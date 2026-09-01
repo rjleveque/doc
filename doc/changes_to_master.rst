@@ -121,6 +121,56 @@ Changes to geoclaw
   reader, the elevation variable must be in meters (or supply ``assume_units``
   via ``nc_params``).  See :ref:`topo`.
 
+- **Unified coarsening and alignment;** ``stride`` **deprecated.**
+  :meth:`~clawpack.geoclaw.topotools.Topography.read` now accepts
+  ``crop_extent``, ``coarsen``, ``buffer`` and ``align`` directly as keyword
+  arguments; passing one is equivalent to setting the attribute of the same
+  name before calling ``read()``.  ASCII (``topo_type`` 2 or 3) and NetCDF
+  (``topo_type=4``) reads of the same data now return identical ``x``, ``y``
+  and ``Z`` for the same ``coarsen`` and ``align``: both drive off a single
+  shared index computation, so the type-4 lazy hyperslab (including files that
+  store latitude north-to-south) and
+  :meth:`~clawpack.geoclaw.topotools.Topography.crop` agree by construction.
+  Previously the NetCDF-only ``stride`` argument silently did nothing for ASCII
+  reads and used a different alignment convention, so the two paths could
+  disagree by a fraction of a coarsened cell.
+
+  ``stride`` is deprecated in favor of the scalar ``coarsen`` and emits a
+  ``DeprecationWarning``.  Per-axis striding is no longer supported and raises
+  ``ValueError``, as does passing both ``stride`` and a conflicting ``coarsen``.
+
+  .. warning::
+
+     This changes NetCDF behavior when no alignment is requested.  ``align=None``
+     (the default) starts the coarsened grid at the requested ``crop_extent``,
+     matching ASCII, ``crop()`` and the old ``read_netcdf``.  The old ``stride``
+     instead snapped the grid to the file's first cell.  A script that relied on
+     that implicit snap can now get a grid offset by up to ``coarsen - 1``
+     native cells; pass ``align`` to pin the lattice explicitly.
+
+  Passing ``align=[x, y]`` locks the coarsened grid to that lattice regardless
+  of where the file's first cell falls.  This matters for DEM tiles that carry a
+  few cells outside their nominal edge -- some NCEI CUDEM tiles extend slightly
+  beyond the quarter-degree square they cover -- where coarsening should follow
+  the quarter-degree lattice rather than an unknown offset::
+
+      topo = Topography()
+      topo.read('tile.nc', topo_type=4, crop_extent=[-124.2, -124.0, 47.1, 47.3],
+                coarsen=3, align=[-124.25, 47.0])
+
+  If the file's own grid does not contain the requested lattice point, alignment
+  selects the nearest native point instead of landing on the lattice exactly, so
+  the coarsened grid can sit up to half a native cell off.  It is still
+  deterministic and independent of ``crop_extent``: every crop of a given file
+  coarsens onto the same grid, which is the property that makes neighboring
+  tiles line up.  See :ref:`topotools` and :ref:`setrun_topo_preprocessing`.
+
+- **Remote NetCDF URL fix.**
+  :class:`~clawpack.geoclaw.netcdf_utils.NetCDFInspector` no longer passes
+  remote ``scheme://`` URLs through ``pathlib.Path``, which collapsed
+  ``https://`` to ``https:/`` and prepended the working directory, breaking
+  OPeNDAP/THREDDS reads.
+
 - **Python-owned priority ordering.**
   Topography files in ``topo.data`` are now sorted entirely in Python by
   :meth:`~clawpack.geoclaw.data.TopographyData._compute_priority_order`
