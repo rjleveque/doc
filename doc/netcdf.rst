@@ -1,11 +1,11 @@
 .. _netcdf_input:
 
+GeoClaw NetCDF Input System
+===========================
+
 .. warning ::  Many changes are being implemented in the way topo and dtopo
   files are handled, in both the Python tools and the Fortran code.
   See :ref:`topochanges` for a summary.
-
-GeoClaw NetCDF Input System
-===========================
 
 This document covers the NetCDF input pipeline introduced in the
 ``refactor-netcdf-support``
@@ -135,6 +135,29 @@ If your NetCDF file covers a larger area than your simulation domain
 
 Only the subset is read into memory at runtime. The full file is never
 loaded.
+
+.. note::
+
+   ``crop_bounds`` and ``crop_extent`` are two different cropping mechanisms
+   and it is worth knowing which one you want.
+
+   - ``crop_bounds`` (this section) is a *descriptor* crop, expressed in the
+     file's own coordinates.  It is recorded in ``topo.data`` and applied by
+     the Fortran code when it reads the NetCDF file at run time.  The file is
+     registered as-is; nothing is read or rewritten in Python.
+   - ``crop_extent`` (see :ref:`setrun_topo_preprocessing`) is a *preprocessing*
+     crop, expressed in domain coordinates.  It is applied by
+     :meth:`~clawpack.geoclaw.topotools.Topography.read` in Python, together
+     with the other preprocessing attributes ``coarsen``, ``buffer``,
+     ``align`` and the shifts.
+
+   Use ``crop_bounds`` when you simply want Fortran to read a window of a large
+   NetCDF file.  Use ``crop_extent`` when you want a
+   :class:`~clawpack.geoclaw.topotools.Topography` object in Python — to
+   coarsen it, shift it, plot it, or write it back out.  To fetch and crop a
+   remote DEM in one call, see
+   :func:`~clawpack.geoclaw.topotools.fetch_remote_topo` and
+   :ref:`noaa_thredds`.
 
 Checking CF compliance
 ^^^^^^^^^^^^^^^^^^^^^^

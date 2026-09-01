@@ -223,23 +223,27 @@ The `NOAA THREDDS server
 can be used to access a variety of topography data sets, including the etopo1
 global data set at 1 arcminute resolution and the etopo2 global data set at 2
 arcminute resolution.  These are available in netCDF format and can be read
-directly into GeoClaw.  As a convenience, you can use the `topotools.read_netcdf
-<topotools_module.html#clawpack.geoclaw.topotools.read_netcdf>`_ function.  Note
-that this also allows reading in only a subset of the data, both limiting the
-extent and the resolution, e.g. by sampling every other point (by setting
-`coarsen=2`). This is particularly useful if you only want a subset of a huge
+directly into GeoClaw.  As a convenience, you can use the
+`topotools.fetch_remote_topo
+<topotools_module.html#clawpack.geoclaw.topotools.fetch_remote_topo>`_ function
+(the older `topotools.read_netcdf` function is now deprecated in favor of it).
+Note that this also allows reading in only a subset of the data, both limiting
+the extent (via `crop_extent`) and the resolution, e.g. by sampling every
+other point (by setting `coarsen=2`). This is particularly useful if you only
+want a subset of a huge
 online netCDF file (e.g. coastal DEMs at 1/3 arcsecond resolution are typically
 several gigabytes).  See :ref:`netcdf_input` for more details on working with
 netCDF files.
 
 The dictionary `topotools.remote_topo_urls` contains some useful URLs for
 etopo and a few other NOAA THREDDS datasets. This allows reading etopo
-60 arc-second data, for example, via::
+30 arc-second data, for example, via::
 
     from clawpack.geoclaw import topotools
-    extent = [-135, -120, 38, 52]
-    topo = topotools.read_netcdf('etopo22_60s', extent=extent,
-                                 coarsen=1, verbose=True)
+    crop_extent = [-135, -120, 38, 52]
+    topo = topotools.fetch_remote_topo('etopo22_30sec',
+                                       crop_extent=crop_extent,
+                                       coarsen=1, verbose=True)
 
 A quick plot of the topography can then be created using::
 
@@ -253,14 +257,16 @@ and the topo can be saved as an ASCII raster topofile via, e.g.::
                grid_registration='llcenter', Z_format='%.1f')
 
 
-See `$CLAW/geoclaw/tests/test_etopo1.py` for one example, in which a very
-small patch from the global etopo1 database (which has 1 arcminute resolution)
-is downloaded at different resolutions.
+See the ETOPO integration tests in `$CLAW/geoclaw/tests/test_topotools.py`
+for an example, in which a very small patch from the global etopo1 database
+(which has 1 arcminute resolution) is downloaded at different resolutions.
 
-**Note:** Earlier versions of clawpack included `etopotools.py` providing a
-different way to download subsampled etopo1 topography.  That has been
-deprecated since the old way is no longer supported by NOAA and did not
-always do the subsampling properly.
+**Note:** The `etopotools.py` module provides `etopotools.fetch_etopo`, a thin
+convenience wrapper around `fetch_remote_topo` for the etopo netCDF datasets,
+along with a legacy `etopotools.etopo1_download` that fetches subsampled etopo1
+data from an older NOAA WCS endpoint.  That WCS endpoint is no longer reliably
+supported by NOAA, so reading the netCDF data directly via `fetch_remote_topo`
+/ `fetch_etopo` is preferred.
 
 **Note:** Data in the NOAA THREDDS server is referenced to NAVD88, not to MHW!
 

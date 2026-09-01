@@ -1,11 +1,11 @@
 .. _topodata_format:
 
+topo.data File Format
+=====================
+
 .. warning ::  Many changes are being implemented in the way topo and dtopo
   files are handled, in both the Python tools and the Fortran code.
   See :ref:`topochanges` for a summary.
-  
-topo.data File Format
-=====================
 
 .. note::
    ``topo.data`` is generated automatically by ``make data`` or by calling
@@ -88,15 +88,16 @@ resolution first, finest last; see :ref:`priority_convention` below).
     a valid extent requires ``x1 < x2`` and ``y1 < y2``).
 
 ``coarsen``
-    Integer stride factor for subsampling (``1`` = no coarsening).
+    Integer subsampling factor: keep every nth point (``1`` = no coarsening).
 
 ``buffer``
     Integer number of grid points to retain outside the crop region on each
     side (``0`` = no buffer).
 
 ``align``
-    Two floats: ``x_align y_align`` alignment target for subsampled grids.
-    Sentinel ``"0. 0."`` means no alignment constraint.
+    Two floats: ``x_align y_align``, a lattice to pin the subsampled grid to.
+    Sentinel ``"0. 0."`` means no alignment constraint, in which case the
+    subsampled grid starts at ``crop_extent``.
 
 ``x_shift``
     Float added to all x coordinates after loading (``0`` = no shift).

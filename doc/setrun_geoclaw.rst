@@ -207,7 +207,7 @@ Set them on the object before appending to ``topofiles``:
    * - ``coarsen``
      - int
      - ``1``
-     - Stride-subsampling factor (1 = no coarsen).
+     - Subsampling factor (1 = no coarsening).
    * - ``buffer``
      - int
      - ``0``
@@ -215,7 +215,8 @@ Set them on the object before appending to ``topofiles``:
    * - ``align``
      - tuple or None
      - ``None``
-     - ``(x, y)`` alignment for coarsened grids.
+     - ``(x, y)`` lattice to pin the coarsened grid to.  ``None`` starts
+       the coarsened grid at ``crop_extent``.
    * - ``x_shift``
      - float
      - ``0.0``
@@ -239,7 +240,9 @@ Set them on the object before appending to ``topofiles``:
 
    - ``crop_extent`` is a preprocessing input. It is distinct from
      ``Topography.extent``, which is a read-only property returning the
-     spatial bounds of the already-loaded data.
+     spatial bounds of the already-loaded data.  It is also distinct from the
+     NetCDF descriptor's ``crop_bounds``, which is applied by Fortran at run
+     time rather than by Python at read time; see :ref:`netcdf_input`.
 
    - ``buffer`` is in grid points, not degrees.  Float values are truncated
      via ``int()``, so ``buffer=0.5`` is equivalent to ``buffer=0``.
@@ -248,8 +251,13 @@ Set them on the object before appending to ``topofiles``:
      If both ``topo_type < 0`` **and** ``negate_z=True`` are active, two
      sign flips are applied and the result is the original Z (net identity).
 
-   - ``coarsen`` uses stride subsampling (every nth point), not cell
-     averaging.
+   - ``coarsen`` subsamples: it keeps every nth point, and does not average
+     over the coarsened cell.
+
+   - ``coarsen`` and ``align`` behave identically for ASCII and NetCDF files,
+     so the same settings applied to the same data in either format give the
+     same grid.  The older NetCDF-only ``stride`` argument to ``read()`` is
+     deprecated in favor of ``coarsen``; see :ref:`topotools_deprecated_args`.
 
 Example using several attributes::
 
